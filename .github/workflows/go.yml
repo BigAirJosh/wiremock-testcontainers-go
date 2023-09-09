@@ -19,5 +19,18 @@ jobs:
     - name: Build
       run: go build -v ./...
 
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ["docker.io/wiremock/wiremock:2.35.0-1", "docker.io/wiremock/wiremock:3.0.0-1"]
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19.11
+
     - name: Test
-      run: go test -v ./...
+      run: IMAGE="${{ matrix.image }}" go test -v ./...
