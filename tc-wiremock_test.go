@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -11,11 +12,14 @@ import (
 	"github.com/wiremock/go-wiremock"
 )
 
+var image = os.Getenv("IMAGE") 
+
 func TestWireMock(t *testing.T) {
 	// Create Container, by deliberately using the RunContainer API
 	ctx := context.Background()
 	container, err := RunContainer(ctx,
 		WithMappingFile("hello", filepath.Join("testdata", "hello-world.json")),
+    WithImage(image),
 	)
 	if err != nil {
 		t.Fatal(err)
